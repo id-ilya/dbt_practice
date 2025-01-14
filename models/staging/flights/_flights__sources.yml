@@ -1,0 +1,60 @@
+sources:
+  - name: demo_src
+    description: "Demo source for flights data"
+    #databaase: dwh_flights
+    #schema: demo_src
+    tables:
+      - name: aircrafts
+        description: '{{ doc("aircrafts_description")}}' #"Aircrafts data"
+        columns:
+          - name: aircraft_code
+            description: > 
+              "Aircraft model code"
+              Consists of 3 uppercase symbols
+            tests:
+              - not_null
+              - unique
+              # - name: "aircraft_code_not_null"
+              #   description: "Check if aircraft_code is not null"
+              #   query: "SELECT COUNT(*) FROM aircrafts WHERE aircraft_code IS NULL"
+              #   expected_result: 0
+          - name: model
+            description: "Aircraft model ame"
+          - name: range
+            description: "__Unkown__"
+      - name: airports
+        description: "Airports data"
+        columns:
+          - name: airport_code
+            description: "Airport code"
+          - name: airport_name
+            description: "Airport name"
+          - name: city
+            description: "City"
+          - name: coordinates
+            description: "Coordinates"
+          - name: timezone
+            description: "Timezone"
+      - name: seats
+        description: "Seats data"
+        columns:
+          - name: aircraft_code
+            description: "Aircraft model code"
+          - name: seat_no
+            description: "Seat number"
+          - name: fare_conditions
+            description: "Fare conditions"
+      - name: bookings
+        description: "Bookings data"
+        columns:
+          - name: book_ref
+            description: "Booking reference"
+          - name: book_date
+            description: "Booking date"
+          - name: total_amount
+            description: "Total amount"
+        freshness:
+          warn_after: {count: 600000, period: hour}
+          error_after: {count: 1000000, period: day}
+          filter: current_timestamp::date - book_date::date < 300000
+        loaded_at_field: book_date::timestamp
