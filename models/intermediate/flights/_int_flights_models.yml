@@ -11,10 +11,9 @@ models:
       - v: 1
     config:
       contract: {enforced: true}
-    meta:
-      owner: data_team
-      contact_name: data_team
-      status: in_dev
+      meta: 
+        owner: "yml_file_owner@gmail.com"
+        status: in_dev
 
     columns:
       - name: book_ref
